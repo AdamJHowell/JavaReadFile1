@@ -12,10 +12,12 @@ private static List< String > ReadFile( String inFileName )
 	{
 		List< String > inAl = new ArrayList<>();
 		String line;
+		int inputLineCount = 0;
 
 		// Read lines until EOF.
 		while( ( line = inBR.readLine() ) != null )
 		{
+			inputLineCount++;
 			// Check for comments.
 			if( line.contains( "//" ) )
 			{
@@ -32,7 +34,7 @@ private static List< String > ReadFile( String inFileName )
 				{
 					if( DEBUG )
 					{
-						System.out.println( "Skipping zero length line." );
+						System.out.println( "ReadFile is skipping a zero length comment on line " + inputLineCount );
 					}
 				}
 			}
@@ -47,10 +49,11 @@ private static List< String > ReadFile( String inFileName )
 				{
 					if( DEBUG )
 					{
-						System.out.println( "Skipping zero length line." );
+						System.out.println( "ReadFile is skipping a zero length line at row " + inputLineCount );
 					}
 				}
 			}
+
 		}
 		return inAl;
 	}
