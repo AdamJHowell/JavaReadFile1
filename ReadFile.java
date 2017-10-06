@@ -1,11 +1,13 @@
 /**
  * ReadFile() reads a file and returns each uncommented line with a length greater than 0.
+ * The class should have a private static boolean DEBUG set to either true or false.
  *
  * @param inFileName a string representing the file to open.
- * @return an ArrayList<String> containing every non-empty line from the input file.
+ * @return an ArrayList<String> containing every non-empty line from the input file, or null if the file could not be opened.
  */
 private static List< String > ReadFile( String inFileName )
 {
+	// Attempt to open the file using "try with resources", to ensure it will close automatically.
 	try( BufferedReader inBR = new BufferedReader( new FileReader( inFileName ) ) )
 	{
 		List< String > inAl = new ArrayList<>();
@@ -49,7 +51,6 @@ private static List< String > ReadFile( String inFileName )
 					}
 				}
 			}
-
 		}
 		return inAl;
 	}
