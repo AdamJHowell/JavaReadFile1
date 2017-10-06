@@ -1,52 +1,61 @@
 /**
-	 * ReadFile()
-	 * This method will read the contents of a text file, and return an ArrayList of Strings, where each element in the List is one line from the input file.
-	 * I recently added the ability to handle comments marked with '//'.
-	 *
-	 * @param inFileName a string representing the file to open.
-	 * @return an ArrayList<String> containing every line from the input file that contained characters.
-	 */
-	private static List<String> ReadFile( String inFileName )
+ * ReadFile() reads a file and returns each uncommented line with a length greater than 0.
+ *
+ * @param inFileName a string representing the file to open.
+ * @return an ArrayList<String> containing every non-empty line from the input file.
+ */
+private static List< String > ReadFile( String inFileName )
+{
+	try( BufferedReader inBR = new BufferedReader( new FileReader( inFileName ) ) )
 	{
-		String line;        // A temporary String to hold the line we read in.
-		List<String> returnList = new ArrayList<>();
+		List< String > inAl = new ArrayList<>();
+		String line;
 
-		try
+		// Read lines until EOF.
+		while( ( line = inBR.readLine() ) != null )
 		{
-			BufferedReader inputBufferedReader = new BufferedReader( new FileReader( inFileName ) );
-			// Read every line in the input file.
-			while( ( line = inputBufferedReader.readLine() ) != null )
+			// Check for comments.
+			if( line.contains( "//" ) )
 			{
-				// Check for comments.
-				if( line.contains( "//" ) )
-				{
-					int commentOffset = line.indexOf( "//" );
-					String subString = line.substring( 0, commentOffset );
+				// Grab all of the text up to the comment.
+				String subString = line.substring( 0, line.indexOf( "//" ) );
 
-					// Only add lines with content.
-					if( subString.length() > 0 )
-					{
-						// Add the line to our ArrayList.
-						returnList.add( subString );
-					}
-					else
-					{
-						if( DEBUG )
-						{
-							System.out.println( "ReadFile() is skipping a zero length line." );
-						}
-					}
+				// Only add lines with content.
+				if( subString.length() > 0 )
+				{
+					// Add the line to our ArrayList.
+					inAl.add( subString );
 				}
 				else
 				{
-					// Add the line to our ArrayList.
-					returnList.add( line );
+					if( DEBUG )
+					{
+						System.out.println( "Skipping zero length line." );
+					}
 				}
 			}
+			else
+			{
+				if( line.length() > 0 )
+				{
+					// Add the line to our ArrayList.
+					inAl.add( line );
+				}
+				else
+				{
+					if( DEBUG )
+					{
+						System.out.println( "Skipping zero length line." );
+					}
+				}
+			}
+
 		}
-		catch( IOException ioe )
-		{
-			ioe.getMessage();
-		}
-		return returnList;
-	} // End of ReadFile() method.
+		return inAl;
+	}
+	catch( IOException ioe )
+	{
+		ioe.getMessage();
+	}
+	return null;
+} // End of ReadFile() method.
