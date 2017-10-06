@@ -1,2 +1,2 @@
 # JavaReadFile
-A simple text file reading method.
+Boilerplate to read text files.
